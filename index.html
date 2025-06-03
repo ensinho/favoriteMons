@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -16,21 +15,32 @@
         .modal-backdrop {
             background-color: rgba(0, 0, 0, 0.7);
         }
-        .card-img-container {
+        .card-img-container { 
             height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: #f0f4f8; 
         }
-        .card-img {
+        .card-img { 
             max-height: 100%;
             max-width: 100%;
             border-radius: 0.8rem;
-            object-fit: contain;
+            object-fit: contain; 
         }
-        .modal-img-container {
-            height: 250px;
+        .modal-img-container { 
+            height: 256px; 
+            width: 100%;
+            background-color: #e5e7eb; 
+            border-radius: 0.5rem; 
+            overflow: hidden; 
+            margin-bottom: 1.5rem; 
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+        }
+        #modal-img { 
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
         }
         .type-badge {
             display: inline-block;
@@ -49,15 +59,41 @@
             text-align: center;
             margin-top: 3rem;
             margin-bottom: 2rem; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+         .header-profile-icon { 
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #e0e7ff; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem; 
+            border: 2px solid #c7d2fe; 
+            overflow: hidden; 
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+        }
+        .classimg { 
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
         }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800">
+<body class="bg-gradient-to-br from-stone-100 to-stone-200 text-stone-800">
 
     <header class="bg-[#2a4096] shadow-lg">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <h1 class="text-4xl font-bold text-white tracking-tight text-center">Pokédex do Ensinho</h1>
-            <p class="text-center text-[#e0e7ff] mt-1 text-lg">COnfira os meus Pokémons preferidos!</p>
+            <div class="flex items-center justify-center mb-1">
+                 <span class="header-profile-icon">
+                    <img class="classimg" src="https://i.pinimg.com/736x/f1/b9/7c/f1b97c20e57d0bc2eaac7f98f6e090af.jpg" alt="[Foto de Ensinho]" />
+                 </span>
+                <h1 class="text-4xl font-bold text-white tracking-tight">Pokédex do Ensinho</h1>
+            </div>
+            <p class="text-center text-[#e0e7ff] mt-1 text-lg">Confira os meus Pokémons preferidos!</p>
         </div>
     </header>
 
@@ -65,7 +101,12 @@
         <div id="pokedex-grid-meus" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         </div>
 
-        <h2 class="section-title">Pokemons favoritos da minha namorada:</h2>
+        <h2 class="section-title">
+            <span class="header-profile-icon">
+                <img class="classimg" src="https://i.pinimg.com/736x/b0/a5/3a/b0a53a94f68ada00339b525e09bd2a2c.jpg" alt="[Foto de Manuwu]" />
+            </span>
+            Pokemons favoritos da Manuwu:
+        </h2>
         <div id="pokedex-grid-namorada" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         </div>
     </main>
@@ -77,8 +118,8 @@
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 <div class="p-6 md:p-8">
-                    <div id="modal-img-container" class="modal-img-container w-full h-64 bg-stone-100 rounded-lg flex items-center justify-center mb-6 shadow-inner">
-                        <img id="modal-img" src="" alt="Imagem do Pokémon" class="max-h-full max-w-full object-contain">
+                    <div id="modal-img-container" class="modal-img-container">
+                        <img id="modal-img" src="" alt="[Imagem do Pokémon no modal]">
                     </div>
                     <h2 id="modal-name" class="text-3xl font-bold text-center mb-3 text-stone-900"></h2>
                     <div id="modal-types" class="flex justify-center flex-wrap gap-2 mb-6">
@@ -237,18 +278,16 @@
             const nameElement = document.createElement('h3');
             nameElement.className = 'text-xl font-bold text-stone-800 group-hover:text-[#2a4096] transition-colors';
             nameElement.textContent = pokemon.name;
-            
             infoDiv.appendChild(nameElement);
             card.appendChild(imgContainer);
             card.appendChild(infoDiv);
-            
             card.addEventListener('click', () => openModal(pokemon));
             return card;
         }
 
         function openModal(pokemon) {
             modalImg.src = pokemon.gif;
-            modalImg.alt = `[Imagem de ${pokemon.name}] no modal`;
+            modalImg.alt = `[Imagem de ${pokemon.name} no modal]`;
             modalName.textContent = pokemon.name;
             modalDesc.textContent = pokemon.description;
             
@@ -294,7 +333,6 @@
                 closeModal();
             }
         });
-
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
                 closeModal();
