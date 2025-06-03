@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Interativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .card-img-container {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f4f8; 
+        }
+        .card-img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 0.8rem;
+            object-fit: contain;
+        }
+        .modal-img-container {
+            height: 250px;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700; 
+            color: #1c1917;
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem; 
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+
+    <header class="bg-[#2a4096] shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <h1 class="text-4xl font-bold text-white tracking-tight text-center">Pokédex do Ensinho</h1>
+            <p class="text-center text-[#e0e7ff] mt-1 text-lg">COnfira os meus Pokémons preferidos!</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div id="pokedex-grid-meus" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        </div>
+
+        <h2 class="section-title">Pokemons favoritos da minha namorada:</h2>
+        <div id="pokedex-grid-namorada" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        </div>
+    </main>
+
+    <div id="pokemon-modal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-backdrop">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-auto transform transition-all duration-300 ease-out scale-95 opacity-0 overflow-y-auto max-h-[90vh]">
+            <div class="relative">
+                <button id="close-modal-btn" class="absolute top-4 right-4 text-stone-500 hover:text-stone-800 transition-colors z-10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <div class="p-6 md:p-8">
+                    <div id="modal-img-container" class="modal-img-container w-full h-64 bg-stone-100 rounded-lg flex items-center justify-center mb-6 shadow-inner">
+                        <img id="modal-img" src="" alt="Imagem do Pokémon" class="max-h-full max-w-full object-contain">
+                    </div>
+                    <h2 id="modal-name" class="text-3xl font-bold text-center mb-3 text-stone-900"></h2>
+                    <div id="modal-types" class="flex justify-center flex-wrap gap-2 mb-6">
+                    </div>
+                    <div class="text-left">
+                         <h3 class="text-xl font-semibold mb-2 text-stone-800">Característica Notável</h3>
+                         <p id="modal-desc" class="text-stone-700 leading-relaxed text-base"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pokemonDataMeus = [
+            {
+                id: "koraidon",
+                name: "Koraidon",
+                types: ["Lutador", "Dragão"],
+                description: "Um Pokémon Lendário do passado com incrível força física, capaz de dividir a terra com seus punhos. Pode mudar de forma para facilitar a travessia em diferentes terrenos.",
+                gif: "https://64.media.tumblr.com/dd7a6ec901aee6fc7a79f1637985108a/e75a31e4ed995ce1-30/s540x810/b55ea1541bf7ee3cff06d7dbcdc2bf0b33be5deb.gif"
+            },
+            {
+                id: "lugia",
+                name: "Lugia",
+                types: ["Psíquico", "Voador"],
+                description: "Conhecido como o \"guardião dos mares\", possui imenso poder capaz de acalmar tempestades e prefere viver nas profundezas do oceano para evitar causar danos com suas poderosas asas.",
+                gif: "https://i.pinimg.com/originals/9e/9b/d0/9e9bd017e4b6f488b3125fadf5282744.gif"
+            },
+            {
+                id: "arcanine",
+                name: "Arcanine",
+                types: ["Fogo"],
+                description: "Admirado por sua beleza, velocidade e bravura. É um Pokémon extremamente leal, capaz de correr grandes distâncias rapidamente. Em algumas regiões, é considerado um Pokémon lendário.",
+                gif: "https://i.pinimg.com/originals/3e/08/a3/3e08a3751035a161dacd85aa5fbdaf12.gif"
+            },
+            {
+                id: "zamazenta",
+                name: "Zamazenta",
+                types: ["Lutador", "Aço"],
+                description: "Um Pokémon lendário conhecido por sua capacidade de repelir qualquer ataque com seu escudo frontal, que é dito ser impenetrável. Luta para proteger os outros.",
+                gif: "https://64.media.tumblr.com/3822866189d66520f4822f3a8d5efbd4/26f331d19aa31a34-58/s640x960/85322ab9a1e08f15c183b4d17b8941e1ca6ce389.gif"
+            },
+            {
+                id: "incineroar",
+                name: "Incineroar",
+                types: ["Fogo", "Sombrio"],
+                description: "Quando o seu espírito de luta aumenta, as chamas que produz na cintura (o seu \"cinto de chamas\") ardem com ainda maior intensidade. Apesar de agir de forma egoísta e violenta, também demonstra um lado mais doce com crianças e Pokémon mais fracos.",
+                gif: "https://i.pinimg.com/originals/8e/78/5e/8e785eee68b9a35d58bc6251dc2b9453.gif"
+            },
+            {
+                id: "gengar",
+                name: "Gengar",
+                types: ["Fantasma", "Veneno"],
+                description: "Adora pregar peças e se esconder nas sombras das pessoas. Dizem que, ao sentir um arrepio repentino, é porque um Gengar está por perto, tentando lançar uma maldição ou roubar o calor de sua vítima.",
+                gif: "https://i.gifer.com/Ly55.gif"
+            },
+            {
+                id: "aggron",
+                name: "Aggron",
+                types: ["Aço", "Rocha"],
+                description: "Reivindica uma montanha inteira como seu território e a defende ferozmente de intrusos. Se sua montanha é danificada, Aggron a restaura plantando árvores e carregando terra. Sua armadura de ferro é extremamente resistente.",
+                gif: "https://images.steamusercontent.com/ugc/532889006048261034/9B1580F39D3D52E96377FA9D9A1175B298FA2F3A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
+            },
+            {
+                id: "lapras",
+                name: "Lapras",
+                types: ["Água", "Gelo"],
+                description: "Um Pokémon altamente inteligente e de bom coração, que adora transportar pessoas e Pokémon nas suas costas através do mar. Possui uma bela voz e canta melodiosamente enquanto nada. Infelizmente, foi caçado quase à extinção.",
+                gif: "https://i.pinimg.com/originals/20/38/50/203850de8bd682baa53be1f64ceeaca2.gif"
+            },
+           
+        ];
+
+        const pokemonDataNamorada = [
+            {
+                id: "jigglypuff",
+                name: "Jigglypuff",
+                types: ["Normal", "Fada"],
+                description: "Conhecido por sua canção de ninar que faz qualquer um dormir. Quando infla seu corpo, pode cantar por mais tempo e com mais potência.",
+                gif: "https://i.pinimg.com/originals/48/ec/83/48ec83a68f8d2f381f1b604c3b4e7a95.gif"
+            },
+            {
+                id: "chansey",
+                name: "Chansey",
+                types: ["Normal"],
+                description: "Um Pokémon gentil que põe ovos altamente nutritivos diariamente. Compartilha seus ovos com pessoas e Pokémon feridos para ajudá-los a se recuperar.",
+                gif: "https://i.imgur.com/jKiWaHM.gif"
+            },
+            {
+                id: "clefairy",
+                name: "Clefairy",
+                types: ["Fada"],
+                description: "Dizem que sua aparição é mais comum em noites de lua cheia. A luz da lua parece lhe dar energia e a capacidade de flutuar levemente no ar.",
+                gif: "https://i.pinimg.com/originals/5c/df/d6/5cdfd6a644da959b6fcdb46b48936c8a.gif"
+            },
+            {
+                id: "sylveon",
+                name: "Sylveon",
+                types: ["Fada"],
+                description: "Enrola suas fitas sensitivas nos braços de seu Treinador querido como um gesto de afeição. Pode emitir uma aura calmante para cessar hostilidades e acalmar conflitos.",
+                gif: "https://images.steamusercontent.com/ugc/441731065134963381/9068F878E9021E8C983BE44A773C4527CE0C25D3/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
+            },
+            {
+                id: "glaceon",
+                name: "Glaceon",
+                types: ["Gelo"],
+                description: "Ao controlar a temperatura do seu corpo, pode congelar a atmosfera ao seu redor para criar uma rajada de pó de diamante ou transformar sua pelagem em agulhas de gelo afiadas.",
+                gif: "https://i.pinimg.com/originals/e7/c5/85/e7c58536ac9c04a9754bcf8956509e7d.gif"
+            },
+            {
+                id: "mimikyu",
+                name: "Mimikyu",
+                types: ["Fantasma", "Fada"],
+                description: "Vive sob um disfarce que se assemelha ao Pikachu porque anseia por amor e atenção. Acredita que pode fazer amigos se parecer com o popular Pokémon. Odeia a luz do sol e seu verdadeiro visual é um mistério aterrorizante.",
+                gif: "https://64.media.tumblr.com/20589380b7d357d6f80dee0f0b92f4a3/bbe7c6b590587875-0c/s640x960/37fab42398815e5ba54b9ff92d2c49475740399d.gif"
+            }
+        ];
+
+        const typeColors = {
+            "Psíquico": "bg-pink-500", "Voador": "bg-indigo-400", "Fogo": "bg-orange-500",
+            "Lutador": "bg-red-700", "Aço": "bg-slate-500", "Dragão": "bg-purple-600",
+            "Fantasma": "bg-violet-700", "Veneno": "bg-fuchsia-600", "Rocha": "bg-amber-700",
+            "Água": "bg-blue-500", "Gelo": "bg-cyan-400", "Sombrio": "bg-neutral-700",
+            "Normal": "bg-stone-400", "Fada": "bg-rose-400"
+        };
+
+        const gridMeus = document.getElementById('pokedex-grid-meus');
+        const gridNamorada = document.getElementById('pokedex-grid-namorada');
+        const modal = document.getElementById('pokemon-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalImg = document.getElementById('modal-img');
+        const modalName = document.getElementById('modal-name');
+        const modalTypes = document.getElementById('modal-types');
+        const modalDesc = document.getElementById('modal-desc');
+
+        function createPokemonCard(pokemon) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col group';
+            card.dataset.id = pokemon.id; 
+
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'card-img-container p-4';
+            
+            const img = document.createElement('img');
+            img.src = pokemon.gif;
+            img.alt = `[Imagem de ${pokemon.name}]`;
+            img.className = 'card-img';
+            img.loading = 'lazy';
+            imgContainer.appendChild(img);
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'p-5 text-center border-t border-stone-200 flex-grow flex flex-col justify-center';
+            
+            const nameElement = document.createElement('h3');
+            nameElement.className = 'text-xl font-bold text-stone-800 group-hover:text-[#2a4096] transition-colors';
+            nameElement.textContent = pokemon.name;
+            
+            infoDiv.appendChild(nameElement);
+            card.appendChild(imgContainer);
+            card.appendChild(infoDiv);
+            
+            card.addEventListener('click', () => openModal(pokemon));
+            return card;
+        }
+
+        function openModal(pokemon) {
+            modalImg.src = pokemon.gif;
+            modalImg.alt = `[Imagem de ${pokemon.name}] no modal`;
+            modalName.textContent = pokemon.name;
+            modalDesc.textContent = pokemon.description;
+            
+            modalTypes.innerHTML = '';
+            pokemon.types.forEach(type => {
+                const typeBadge = document.createElement('span');
+                const colorClass = typeColors[type] || 'bg-gray-400';
+                typeBadge.className = `type-badge ${colorClass}`;
+                typeBadge.textContent = type;
+                modalTypes.appendChild(typeBadge);
+            });
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            });
+        }
+        
+        function closeModal() {
+             modalContent.classList.add('scale-95', 'opacity-0');
+             modalContent.classList.remove('scale-100', 'opacity-100');
+             setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        pokemonDataMeus.forEach((pokemon) => {
+            const card = createPokemonCard(pokemon);
+            gridMeus.appendChild(card);
+        });
+
+        pokemonDataNamorada.forEach((pokemon) => {
+            const card = createPokemonCard(pokemon);
+            gridNamorada.appendChild(card);
+        });
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
