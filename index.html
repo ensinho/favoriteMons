@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex Interativo</title>
+    <title>Pokédex Ensinho</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,31 +16,27 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; 
-            background-image: linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-                              linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-                              linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-                              linear-gradient(315deg, rgba(255,255,255,0.03) 25%, #f3f4f6 25%); 
-            background-size: 40px 40px;
+            background: url("https://wallpapercave.com/wp/wp13190579.jpg");
+            background-size: cover;
         }
         .modal-backdrop {
             background-color: rgba(0, 0, 0, 0.75); 
         }
         .pokemon-card {
-            background-color: white;
+            background-color: #fafafa;
             border-radius: 0.75rem; 
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); 
             overflow: hidden; 
             display: flex;
             flex-direction: column;
             transition: all 0.4s ease-in-out;
-            border: 1px solid #e5e7eb; 
+            border: 2px solid #e5e7eb; 
             cursor: pointer;
         }
         .pokemon-card:hover {
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); 
             transform: translateY(-4px);
-            border-color: #1d4ed8; 
+            border-color: #4F54EE; 
         }
         .card-img { 
             display: block; 
@@ -51,7 +47,7 @@
             max-width: 100%; 
             object-fit: contain; 
             image-rendering: pixelated; 
-            background-color: #f8fafc; 
+            background-color: #e0f2fe;
         }
         .card-info {
             padding: 1rem; 
@@ -65,7 +61,7 @@
             transition: color 0.2s ease-in-out;
         }
         .pokemon-card:hover .card-name {
-            color: #1d4ed8; 
+            color: #4F54EE; 
         }
         .modal-img-container { 
             height: 18rem; 
@@ -95,7 +91,7 @@
         .section-title {
             font-size: 2.25rem;
             font-weight: 700; 
-            color: #1c1917;
+            color: #fff;
             text-align: center;
             margin-top: 3rem;
             margin-bottom: 2rem; 
@@ -104,8 +100,8 @@
             justify-content: center;
         }
          .header-profile-icon { 
-            width: 50px;
-            height: 50px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background-color: #dbeafe; 
             display: inline-flex;
@@ -162,13 +158,15 @@
         .apego-section, .description-section {
             padding-top: 0; 
         }
+        .header {
+        }
     </style>
 </head>
 <body class="text-stone-800 min-h-screen">
 
-    <header class="bg-blue-700 shadow-lg sticky top-0 z-40">
+    <header class="header shadow-lg  top-0 z-40">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-start">
                  <span class="header-profile-icon mr-4"> 
                     <img class="classimg" src="https://i.pinimg.com/736x/f1/b9/7c/f1b97c20e57d0bc2eaac7f98f6e090af.jpg" alt="[Foto de Ensinho]" />
                  </span>
@@ -230,7 +228,7 @@
                 name: "Koraidon",
                 types: ["Lutador", "Dragão"],
                 description: "Um Pokémon Lendário do passado com incrível força física, capaz de dividir a terra com seus punhos. Pode mudar de forma para facilitar a travessia em diferentes terrenos.",
-                img_static: "https://i.redd.it/6ux6ym0818391.png",
+                img_static: "https://static.wikia.nocookie.net/pokemon-keishou/images/5/59/KORAIDON.png/revision/latest/thumbnail/width/360/height/360?cb=20240809060526",
                 sprite_gif: "https://shinyash.com/cdn/shop/files/1007---Koraidon-_Apex-Build_19c80f42-3ee6-458a-a32a-5e63188177a6.gif?v=1736299061", 
                 gif: "https://64.media.tumblr.com/dd7a6ec901aee6fc7a79f1637985108a/e75a31e4ed995ce1-30/s540x810/b55ea1541bf7ee3cff06d7dbcdc2bf0b33be5deb.gif",
                 apego: "Ele é meio que um pokémon que eu me Identifico, todo bobalhão e curioso, muito eu sabe! Ele também ama sanduíches que nem eu, a introdução dele na história vem disso."
